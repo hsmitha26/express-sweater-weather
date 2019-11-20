@@ -6,3 +6,9 @@ const geocode = process.env.GEOCODE_API_KEY
 const darkSky = process.env.DARKSKY_API_KEY
 
 const fetch = require('node-fetch');
+
+function invitesIndex(){
+  fetch("https://hedgehog-party.herokuapp.com/api/v1/invites")
+  .then(response => response.json())
+  .then(result => console.log(result))
+};
