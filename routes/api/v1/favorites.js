@@ -10,7 +10,6 @@ router.post('/', (request, response) => {
     .then(user => {
       let userCredential = request.body.api_key
       let location = request.body.location
-
       if (userCredential === user.apiKey) {
         database('users').where('apiKey', userCredential)
           .then(user => {
