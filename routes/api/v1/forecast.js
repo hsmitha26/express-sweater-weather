@@ -28,10 +28,8 @@ router.get('/', (request, response) =>  {
                 var currentForecast = result.currently
                 var hourlyForecast = result.hourly
                 var dailyForecast = result.daily
-                console.log(dailyForecast, 'daily forecast')
-                // format data per spec for currentForecast, hourlyForecast and dailyForecast and then pass it to data
-                // var data = {currently: currentForecast, hourly: hourlyForecast}
-                // response.status(200).send(data)
+                var data = {currently: currentForecast, hourly: hourlyForecast, daily: dailyForecast}
+                response.status(200).send(data)
               })
             })
           } else {
