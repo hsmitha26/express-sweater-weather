@@ -29,7 +29,7 @@ router.get('/', (request, response) => {
   let userCredential = request.body.api_key
   database('users').where('apiKey', userCredential)
     .then(user => {
-
+      
       console.log(user, "user found")
     })
 });
