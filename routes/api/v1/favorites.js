@@ -25,4 +25,25 @@ router.post('/', (request, response) => {
     })
 });
 
+router.delete('/', (request, response) => {
+  let userCredential = request.body.api_key
+  let location = request.body.location
+  database('users').where('apiKey', userCredential).first()
+  .then(user => {
+    if (userCredential === user.apiKey) {
+      database('locations').where('user_id', user.id)
+      .then(locations => {
+
+        console.log(locations, 'user found')
+      })
+      // find all associated favorite locations
+      // check if location matches one of the favorite locations
+      // delete that location
+      // response.sendStatus(204)
+    } else {
+      response.sendStatus(401)
+    }
+  })
+});
+
 module.exports = router;
