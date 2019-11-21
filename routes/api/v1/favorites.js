@@ -26,7 +26,12 @@ router.post('/', (request, response) => {
 });
 
 router.get('/', (request, response) => {
-  console.log(request, "request data")
+  let userCredential = request.body.api_key
+  database('users').where('apiKey', userCredential)
+    .then(user => {
+
+      console.log(user, "user found")
+    })
 });
 
 module.exports = router;
