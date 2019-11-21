@@ -27,30 +27,30 @@ router.post('/', (request, response) => {
 
 router.get('/', (request, response) => {
   let userCredential = request.body.api_key
-
   database('users').where({apiKey: userCredential}).first()
     .then(user => {
       if (userCredential === user.apiKey) {
-        database('locations').where({user_id: user.id})
+        database('locations').where({user_id: user.id}).select('name')
           .then(locations => {
-            return locations.map(async(location) => {
-              await fetchForecast(location)
+              forecastArray(locations)
+              .then(locationForecast => {
+                response.status(200).send(locationForecast)
+              })
             })
-            // return locationForecast;
-            // .then(response.status(200).send(locationForecast))
-            // console.log(Promise.all(locationForecast))
-
-        })
-        .then(locationForecast => {
-          Promise.all(locationForecast).then(values => {
-            console.log(values)
-          })
-        })
       } else {
         response.sendStatus(401)
       }
     })
 });
+
+async function forecastArray(locations) {
+  let data = await Promise.all(locations.map(async (location) => {
+    let forecast = await fetchForecast(location)
+    return forecast;
+  }))
+  console.log(data, 'forecast');
+  return data;
+};
 
 async function fetchForecast(location) {
   let geocode = process.env.GEOCODE_API_KEY
