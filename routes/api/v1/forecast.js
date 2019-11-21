@@ -28,7 +28,7 @@ router.get('/', (request, response) =>  {
                 var currentForecast = result.currently
                 var hourlyForecast = result.hourly
                 var dailyForecast = result.daily
-                var data = {currently: currentForecast, hourly: hourlyForecast, daily: dailyForecast}
+                var data = {location: location, currently: currentForecast, hourly: hourlyForecast, daily: dailyForecast}
                 response.status(200).send(data)
               })
             })
