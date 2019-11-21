@@ -11,7 +11,7 @@ exports.seed = function(knex) {
 
         // Insert a single paper, return the paper ID, insert 2 footnotes
         knex('users').insert({
-          username: 'User1', apiKey: '12345abcdef'}, 'id')
+          username: 'User1', apiKey: 'jgn983hy48thw9begh98h4539h4'}, 'id')
         .then(user => {
           return knex('locations').insert([
             { name: 'Denver, CO', user_id: user[0] },
