@@ -14,7 +14,7 @@ router.post('/', (request, response) => {
         var data = {
                         "message": `${location} has been added to your favorites`
                       }
-          database('locations').insert({name: location, user_id: user.id})
+        database('locations').insert({name: location, user_id: user.id})
           .then(response.status(200).send(data))
       } else {
         response.sendStatus(401)
