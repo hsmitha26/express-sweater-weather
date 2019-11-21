@@ -48,7 +48,6 @@ async function forecastArray(locations) {
     let forecast = await fetchForecast(location)
     return forecast;
   }))
-  console.log(data, 'forecast');
   return data;
 };
 
