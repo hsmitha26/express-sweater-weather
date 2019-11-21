@@ -25,7 +25,21 @@ router.post('/', (request, response) => {
     })
 });
 
-
+router.get('/', (request, response) => {
+  let userCredential = request.body.api_key
+  database('users').where('apiKey', userCredential).first()
+    .then(user => {
+      if (userCredential === user.apiKey) {
+        database('locations').where({user_id: user.id})
+        .then(locations => {
+          // map over locations array and make api call for each element.  Will need to use async/await so api doesn't time out.
+          console.log(locations, "locations found")
+        })
+      } else {
+        response.sendStatus(401)
+      }
+    })
+});
 
 router.delete('/', (request, response) => {
   let userCredential = request.body.api_key
