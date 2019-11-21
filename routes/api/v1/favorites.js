@@ -31,22 +31,12 @@ router.delete('/', (request, response) => {
   database('users').where('apiKey', userCredential).first()
     .then(user => {
       if (userCredential === user.apiKey) {
-        database('locations').where('user_id', user.id)
-          .then(locations => {
-            for (const l of locations) {
-              l.delete
-            }
-            response.sendStatus(204)
-            console.log(locations, 'remaining locations')
-          })
+        database('locations').where({user_id: user.id, name: location}).del()
+        .then(response.sendStatus(204))
       } else {
       response.sendStatus(401)
-    }
-  })
+      }
+    })
 });
 
-
-      // find all associated favorite locations
-      // check if location matches one of the favorite locations
-      // delete that location
 module.exports = router;
