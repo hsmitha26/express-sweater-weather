@@ -25,4 +25,8 @@ router.post('/', (request, response) => {
     })
 });
 
+router.get('/', (request, response) => {
+  console.log(request, "request data")
+});
+
 module.exports = router;
