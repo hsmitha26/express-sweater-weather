@@ -1,5 +1,7 @@
+var _env = require('dotenv').config();
 var express = require('express');
 var router = express.Router();
+const fetch = require('node-fetch');
 
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('../../../knexfile')[environment];
@@ -8,6 +10,7 @@ const database = require('knex')(configuration);
 router.post('/', (request, response) => {
   let userCredential = request.body.api_key
   let location = request.body.location
+
   database('users').where('apiKey', userCredential).first()
     .then(user => {
       if (userCredential === user.apiKey) {
@@ -24,13 +27,24 @@ router.post('/', (request, response) => {
 
 router.get('/', (request, response) => {
   let userCredential = request.body.api_key
-  database('users').where('apiKey', userCredential).first()
+
+  database('users').where({apiKey: userCredential}).first()
     .then(user => {
       if (userCredential === user.apiKey) {
         database('locations').where({user_id: user.id})
-        .then(locations => {
-          // map over locations array and make api call for each element.  Will need to use async/await so api doesn't time out.
-          console.log(locations, "locations found")
+          .then(locations => {
+            return locations.map(async(location) => {
+              await fetchForecast(location)
+            })
+            // return locationForecast;
+            // .then(response.status(200).send(locationForecast))
+            // console.log(Promise.all(locationForecast))
+
+        })
+        .then(locationForecast => {
+          Promise.all(locationForecast).then(values => {
+            console.log(values)
+          })
         })
       } else {
         response.sendStatus(401)
@@ -38,9 +52,26 @@ router.get('/', (request, response) => {
     })
 });
 
+async function fetchForecast(location) {
+  let geocode = process.env.GEOCODE_API_KEY
+  let darkSky = process.env.DARKSKY_API_KEY
+
+  let response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${geocode}`);
+    let result = await response.json();
+    let latitude = result.results[0].geometry.location.lat
+    let longitude = result.results[0].geometry.location.lng
+
+    let darkSkyResponse = await fetch(`https://api.darksky.net/forecast/${darkSky}/${latitude},${longitude}`)
+      let forecastData = await darkSkyResponse.json();
+      var currentForecast = forecastData.currently
+      var data = {location: location.name, currently: currentForecast}
+      return data;
+};
+
 router.delete('/', (request, response) => {
   let userCredential = request.body.api_key
   let location = request.body.location
+
   database('users').where('apiKey', userCredential).first()
     .then(user => {
       if (userCredential === user.apiKey) {
