@@ -25,10 +25,12 @@ router.get('/', (request, response) =>  {
             fetch(`https://api.darksky.net/forecast/${darkSky}/${latitude},${longitude}`)
               .then(response => response.json())
               .then(result => {
-                console.log(result)
-                // var currentlyForecast = {parse result} ,
-                // var hourlyForecast = {parse result}
-                // var data = {currently: currentlyForecast, hourly: hourlyForecast}
+                var currentForecast = result.currently
+                var hourlyForecast = result.hourly
+                var dailyForecast = result.daily
+                console.log(dailyForecast, 'daily forecast')
+                // format data per spec for currentForecast, hourlyForecast and dailyForecast and then pass it to data
+                // var data = {currently: currentForecast, hourly: hourlyForecast}
                 // response.status(200).send(data)
               })
             })
