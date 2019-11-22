@@ -46,7 +46,7 @@ router.get('/', (request, response) => {
 
 async function forecastArray(locations) {
   let data = await Promise.all(locations.map(async (location) => {
-    let forecast = await fetchForecast(location)
+    let forecast = await fetchForecast(location.name)
     return forecast;
   }))
   return data;
