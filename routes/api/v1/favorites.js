@@ -64,7 +64,7 @@ async function fetchForecast(location) {
     let darkSkyResponse = await fetch(`https://api.darksky.net/forecast/${darkSky}/${latitude},${longitude}`)
       let forecastData = await darkSkyResponse.json();
       var currentForecast = new currentWeather(forecastData.currently)
-      var data = {location: location.name, currently: currentForecast}
+      var data = {location: location, currently: currentForecast}
       return data;
 };
 
