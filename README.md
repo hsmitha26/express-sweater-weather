@@ -1,74 +1,217 @@
-# All your Express base are belong to us
+# Sweater Weather (using Express Framework)
 
-[![Build Status](https://travis-ci.com/turingschool-examples/all-your-base.svg?branch=master)](https://travis-ci.com/turingschool-examples/all-your-base)
+Contributor: [Smitha Hosmani](https://github.com/hsmitha26)
 
-## Getting started
-To use this repo, you’ll need to `fork` the repo as your own. Once you have done that, you’ll need to run the following command below to get everything up and running. 
+## About the Project
 
-#### Installing necessary dependencies
-The easiest way to get started is to run the following command. This will pull down any necessary dependencies that your app will require. You can think of this command as something incredibly similar to `bundle install` in Rails. 
+A solo project completed in 3 days in Module 4 of Backend Engineering at Turing School of Software and Design.  This was my first attempt at a project in JavaScript.
 
-`npm install`
+This app exposes endpoints that return weather forecast for a specific city. It also allows a user to 'favorite' a city and delete a 'favorited' city.  All endpoints require the user to be verified with an API key.
 
-#### Set up your local database
-You’ll need to figure out a name for your database. We suggest calling it something like `sweater_weather_dev`.  
+Deployed app: (https://express-weather-forecast.herokuapp.com/)
 
-To get things set up, you’ll need to access your Postgres instance by typing in `psql` into your terminal. Once there, you can create your database by running the comment `CREATE DATABASE PUT_DATABASE_NAME_HERE_dev;`. 
+## Schema
+![db_diagram.png](./db/db_diagram.png)
 
-Now you have a database for your new project.
+## Tech Stack
 
-#### Migrations
-Once you have your database setup, you’ll need to run some migrations (if you have any). You can do this by running the following command: 
+* [Express for Node.js](https://expressjs.com/)
+* [JavaScript](https://devdocs.io/javascript/)
+* [Knex.js](http://knexjs.org/)
 
-`knex migrate:latest`
+## Setup
 
+* `git clone git@github.com:hsmitha26/express-sweater-weather.git`
+* `npm install`
+* Add `.env` file in the root directory and add your API keys:
+  * `GEOCODE_API_KEY=<your Google Geodcode API Key>`
+  * `DARKSKY_API_KEY=<your Dark Sky API Key>`
 
-Instructions to create database, run migrations, and seed: 
+To run the server: `npm start`
+* local server: `http://localhost:3000`
+* production: `https://express-weather-forecast.herokuapp.com/`
+
+## In Postman, append the url to expose the below endpoints.
+
+### Forecast Data
+#### Request:
+
 ```
-psql
-CREATE DATABASE DATABASE_NAME_dev;
-\q
+GET /api/v1/forecast?location=denver,co
+Content-Type: application/json
+Accept: application/json
 
-knex migrate:latest
-knex seed:run
-```
-
-#### Set up your test database
-Most of the setup is going to be same as the one you did before. You’ll notice one small difference with setting the environment flag to `test`.  
-
-```
-psql
-CREATE DATABASE DATABASE_NAME_test;
-\q
-
-knex migrate:latest --env test
-```
-
-## Running your tests
-Running tests are simple and require you to run the following command below: 
-
-`npm test`
-
-When the tests have completed, you’ll get a read out of how things panned out. The tests will be a bit more noisy than what you’re used to, so be prepared. 
-
-## Setting up your production environment
-This repo comes with a lot of things prepared for you. This includes production ready configuration. To get started, you’ll need to do a few things. 
-
-- Start a brand new app on the Heroku dashboard 
-- Add a Postgres instance to your new Heroku app
-- Find the URL of that same Postgres instance and copy it. It should look like a long url. It may look something like like `postgres://sdflkjsdflksdf:9d3367042c8739f3...`.
-- Update your `knexfile.js` file to use your Heroku database instance. You’ll see a key of `connection` with a value of an empty string. This is where you’ll paste your new Postgres instance URL. 
-
-Once you’ve set all of that up, you’ll need to `add the remote` to your new app. This should work no differently than how you’ve done it with any Rails project. Adding this remote will allow you to run `git push heroku master`. 
-
-Once you’ve done that, you’ll need to `bash` into your Heroku instance and get some things set up. 
-
-- Run the following commands to get started:
-```
-heroku run bash
-npm install
-nom install -g knex
-knex migrate:latest
+body:
+{
+  "api_key": "jgn983hy48thw9begh98h4539h4"
+}
 ```
 
-This will install any dependencies, install Knex, and migrate any changes that you’ve made to the database. 
+#### Response (a portion of it):
+```
+{
+  "location": "Denver, C0",
+  "currently": {
+      "summary": "Overcast",
+      "icon": "cloudy",
+      "precipIntensity": 0,
+      "precipProbability": 0,
+      "temperature": 54.91,
+      "humidity": 0.65,
+      "pressure": 1020.51,
+      "windSpeed": 11.91,
+      "windGust": 23.39,
+      "windBearing": 294,
+      "cloudCover": 1,
+      "visibility": 9.12,
+    },
+  "hourly": {
+    "summary": "Partly cloudy throughout the day and breezy this evening.",
+    "icon": "wind",
+    "data": [
+      {
+      "time": 1555016400,
+      "summary": "Overcast",
+      "icon": "cloudy",
+      "precipIntensity": 0,
+      "precipProbability": 0,
+      "temperature": 54.9,
+      "humidity": 0.65,
+      "pressure": 1020.8,
+      "windSpeed": 11.3,
+      "windGust": 22.64,
+      "windBearing": 293,
+      "cloudCover": 1,
+      "visibility": 9.02,
+      },
+    ]
+  },
+  "daily": {
+    "summary": "No precipitation throughout the week, with high temperatures bottoming out at 58°F on Monday.",
+    "icon": "clear-day",
+    "data": [
+      {
+        "time": 1554966000,
+        "summary": "Partly cloudy throughout the day and breezy in the evening.",
+        "icon": "wind",
+        "sunriseTime": 1554990063,
+        "sunsetTime": 1555036947,
+        "precipIntensity": 0.0001,
+        "precipIntensityMax": 0.0011,
+        "precipIntensityMaxTime": 1555045200,
+        "precipProbability": 0.11,
+        "precipType": "rain",
+        "temperatureHigh": 57.07,
+        "temperatureLow": 51.47,
+        "humidity": 0.66,
+        "pressure": 1020.5,
+        "windSpeed": 10.94,
+        "windGust": 33.93,
+        "cloudCover": 0.38,
+        "visibility": 9.51,
+        "temperatureMin": 53.49,
+        "temperatureMax": 58.44,
+      },
+    ]
+  }
+}
+```
+
+### Favoriting Locations
+#### Request:
+
+```
+POST /api/v1/favorites
+Content-Type: application/json
+Accept: application/json
+
+body:
+
+{
+  "location": "Denver, CO",
+  "api_key": "jgn983hy48thw9begh98h4539h4"
+}
+```
+
+#### Response:
+```
+status: 200
+body:
+
+{
+  "message": "Denver, CO has been added to your favorites",
+}
+```
+
+### Removing Favorite Locations
+#### Request:
+
+```
+DELETE /api/v1/favorites
+Content-Type: application/json
+Accept: application/json
+
+body:
+
+{
+  "location": "Denver, CO",
+  "api_key": "jgn983hy48thw9begh98h4539h4"
+}
+```
+
+#### Response:
+`status: 204`
+
+### Listing Favorite Locations
+#### Request:
+```
+GET /api/v1/favorites
+Content-Type: application/json
+Accept: application/json
+
+body:
+
+{
+  "api_key": "jgn983hy48thw9begh98h4539h4"
+}
+```
+
+#### Response (a portion of it):
+```
+status: 200
+body:
+[
+  {
+    "location": "Denver, CO",
+    "current_weather": {
+      "summary": "Overcast",
+      "icon": "cloudy",
+      "precipIntensity": 0,
+      "precipProbability": 0,
+      "temperature": 54.91,
+      "humidity": 0.65,
+      "pressure": 1020.51,
+      "windSpeed": 11.91,
+      "windGust": 23.39,
+      "windBearing": 294,
+      "cloudCover": 1,
+      "visibility": 9.12,
+    },
+    "location": "Golden, CO",
+    "current_weather": {
+      "summary": "Sunny",
+      "icon": "sunny",
+      "precipIntensity": 0,
+      "precipProbability": 0,
+      "temperature": 71.00,
+      "humidity": 0.50,
+      "pressure": 1015.10,
+      "windSpeed": 10.16,
+      "windGust": 13.40,
+      "windBearing": 200,
+      "cloudCover": 0,
+      "visibility": 8.11,
+    }
+  }
+]
+```
