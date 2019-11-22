@@ -2,6 +2,7 @@ var _env = require('dotenv').config();
 var express = require('express');
 var router = express.Router();
 const fetch = require('node-fetch');
+var currentWeather = require('../../../formattedData/currentWeather');
 
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('../../../knexfile')[environment];
@@ -62,7 +63,7 @@ async function fetchForecast(location) {
 
     let darkSkyResponse = await fetch(`https://api.darksky.net/forecast/${darkSky}/${latitude},${longitude}`)
       let forecastData = await darkSkyResponse.json();
-      var currentForecast = forecastData.currently
+      var currentForecast = new currentWeather(forecastData.currently)
       var data = {location: location.name, currently: currentForecast}
       return data;
 };
