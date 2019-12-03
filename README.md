@@ -31,6 +31,8 @@ To run the server: `npm start`
 * local server: `http://localhost:3000`
 * production: `https://express-weather-forecast.herokuapp.com/`
 
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/25daa3b4d3b77e758000)
+
 ## In Postman, append the url to expose the below endpoints.
 
 ### Forecast Data
